@@ -19,14 +19,14 @@ if ($_GET['deviceid']) {
 			header('Content-type: text/xml');
 			$output = "<?xml version=\"1.0\"?>\n";
 			$output .= "<apiResponse>\n";
-				$output .= "<status>paired</status>\n";
+			$output .= "<status>paired</status>\n";
 			$output .= "</apiResponse>";
 			echo $output;
 		} else {
 			header('Content-type: text/xml');
 			$output = "<?xml version=\"1.0\"?>\n";
 			$output .= "<apiResponse>\n";
-				$output .= "<status>failure</status>\n";
+			$output .= "<status>failure</status>\n";
 			$output .= "</apiResponse>";
 			echo $output;
 		}
@@ -34,7 +34,7 @@ if ($_GET['deviceid']) {
 		header('Content-type: text/xml');
 		$output = "<?xml version=\"1.0\"?>\n";
 		$output .= "<apiResponse>\n";
-			$output .= "<status>failure</status>\n";
+		$output .= "<status>failure</status>\n";
 		$output .= "</apiResponse>";
 		echo $output;
 	}
@@ -42,7 +42,7 @@ if ($_GET['deviceid']) {
 	header('Content-type: text/xml');
 	$output = "<?xml version=\"1.0\"?>\n";
 	$output .= "<apiResponse>\n";
-		$output .= "<status>failure</status>\n";
+	$output .= "<status>failure</status>\n";
 	$output .= "</apiResponse>";
 	echo $output;
 }

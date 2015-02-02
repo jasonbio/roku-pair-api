@@ -21,7 +21,7 @@ if ($_GET['deviceid']) {
 			header('Content-type: text/xml');
 			$output = "<?xml version=\"1.0\"?>\n";
 			$output .= "<apiResponse>\n";
-				$output .= "<regCode expires=\"".$expires."\">".$code."</regCode>\n";
+			$output .= "<regCode expires=\"".$expires."\">".$code."</regCode>\n";
 			$output .= "</apiResponse>";
 			echo $output;
 		}
@@ -36,7 +36,7 @@ if ($_GET['deviceid']) {
 			header('Content-type: text/xml');
 			$output = "<?xml version=\"1.0\"?>\n";
 			$output .= "<apiResponse>\n";
-				$output .= "<regCode expires=\"".$expires."\">".$code."</regCode>\n";
+			$output .= "<regCode expires=\"".$expires."\">".$code."</regCode>\n";
 			$output .= "</apiResponse>";
 			echo $output;
 		}

@@ -19,7 +19,7 @@ if ($_GET['deviceid']) {
 		$expires_safe = "'" . $db->real_escape_string($expires) . "'";
 		$status = "waiting";
 		$status_safe = "'" . $db->real_escape_string($status) . "'";
-		if ($mysqli->query("INSERT INTO database (code, status, deviceid, expires) VALUES ($code_safe,$status_safe,$id_safe,$expires_safe)")) {
+		if ($db->query("INSERT INTO table (code, status, deviceid, expires) VALUES ($code_safe,$status_safe,$id_safe,$expires_safe)")) {
 			header('Content-type: text/xml');
 			$output = "<?xml version=\"1.0\"?>\n";
 			$output .= "<apiResponse>\n";

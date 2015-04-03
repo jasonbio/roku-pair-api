@@ -1,23 +1,26 @@
 <?php
-if ($_GET['deviceid']) {
-	$mysqli = new mysqli("localhost", "user", "password", "database");
-	if (mysqli_connect_errno()) {
-		printf("Connect failed: %s\n", mysqli_connect_error());
-		exit();
-	}
-	$id = $_GET['deviceid'];
-	$deviceid_safe = $mysqli->real_escape_string($id);
-	$res = $mysqli->query("SELECT * FROM database WHERE deviceid='$deviceid_safe'");
-	$row = $res->fetch_assoc();
+include("includes/db.php");
+$rows = array();
+$numrows = 0;
 
-	if (!$row) {
+if ($_GET['deviceid']) {
+	$id_safe = "'" . $db->real_escape_string($_GET['deviceid']) . "'";
+	$status = "paired";
+	$query = $db->query("SELECT * FROM table WHERE deviceid=? AND status=?");
+	$query->bind_param('ss', $id_safe, $paired); // Roku device IDs are alphanumeric
+    $query->execute();
+    $query->store_result();
+    $numrows = $query->num_rows;
+    $query->free_result();
+
+	if ($numrows == 0) {
 		$code = generateRandomString();
-		$code_safe = $mysqli->real_escape_string($code);
+		$code_safe = "'" . $db->real_escape_string($code) . "'";
 		$expires = strtotime('+10 minutes', time());
-		$expires_safe = $mysqli->real_escape_string($expires);
+		$expires_safe = "'" . $db->real_escape_string($expires) . "'";
 		$status = "waiting";
-		$status_safe = $mysqli->real_escape_string($status);
-		if ($mysqli->query("INSERT INTO database (code, status, deviceid, expires) VALUES ('$code_safe','$status_safe','$deviceid_safe','$expires_safe')")) {
+		$status_safe = "'" . $db->real_escape_string($status) . "'";
+		if ($mysqli->query("INSERT INTO database (code, status, deviceid, expires) VALUES ($code_safe,$status_safe,$id_safe,$expires_safe)")) {
 			header('Content-type: text/xml');
 			$output = "<?xml version=\"1.0\"?>\n";
 			$output .= "<apiResponse>\n";
@@ -26,20 +29,12 @@ if ($_GET['deviceid']) {
 			echo $output;
 		}
 	} else {
-		$code = generateRandomString();
-		$code_safe = $mysqli->real_escape_string($code);
-		$expires = strtotime('+10 minutes', time());
-		$expires_safe = $mysqli->real_escape_string($expires);
-		$status = "waiting";
-		$status_safe = $mysqli->real_escape_string($status);
-		if ($mysqli->query("INSERT INTO database (code, status, deviceid, expires) VALUES ('$code_safe','$status_safe','$deviceid_safe','$expires_safe')")) {
-			header('Content-type: text/xml');
-			$output = "<?xml version=\"1.0\"?>\n";
-			$output .= "<apiResponse>\n";
-			$output .= "<regCode expires=\"".$expires."\">".$code."</regCode>\n";
-			$output .= "</apiResponse>";
-			echo $output;
-		}
+		header('Content-type: text/xml');
+		$output = "<?xml version=\"1.0\"?>\n";
+		$output .= "<apiResponse>\n";
+		$output .= "Device already paired\n";
+		$output .= "</apiResponse>";
+		echo $output;
 	}
 }
 function generateRandomString($length = 7) {

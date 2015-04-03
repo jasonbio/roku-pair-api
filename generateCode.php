@@ -1,11 +1,10 @@
 <?php
 include("includes/db.php");
-$rows = array();
 $numrows = 0;
 
 if ($_GET['deviceid']) {
 	$id_safe = "'" . $db->real_escape_string($_GET['deviceid']) . "'";
-	$status = "paired";
+	$paired = "paired";
 	$query = $db->query("SELECT * FROM table WHERE deviceid=? AND status=?");
 	$query->bind_param('ss', $id_safe, $paired); // Roku device IDs are alphanumeric
     $query->execute();
